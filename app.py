@@ -503,5 +503,5 @@ def make_graphs(n, df, question,target,time):
 
 
 
-if __name__ == '__main__':
-    app.run(debug=False)
+#if __name__ == '__main__':
+#    app.run(debug=False)

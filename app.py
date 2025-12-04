@@ -1,3 +1,5 @@
+print("--- Start Running Python code ---")
+
 import base64
 import datetime
 import io
@@ -22,6 +24,8 @@ import spacy
 import numpy as np
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+
+print("--- Import library succeeded ---")
 #nlp = spacy.load("en_core_web_lg")
 #
 #model_name = "Qwen/Qwen2.5-1.5B-Instruct"

@@ -22,16 +22,16 @@ import spacy
 import numpy as np
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-nlp = spacy.load("en_core_web_lg")
-
-model_name = "Qwen/Qwen2.5-1.5B-Instruct"
-
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    device_map="auto",
-    dtype="auto"
-)
+#nlp = spacy.load("en_core_web_lg")
+#
+#model_name = "Qwen/Qwen2.5-1.5B-Instruct"
+#
+#tokenizer = AutoTokenizer.from_pretrained(model_name)
+#model = AutoModelForCausalLM.from_pretrained(
+#    model_name,
+#    device_map="auto",
+#    dtype="auto"
+#)
 
 def embed(text):
     return nlp(text).vector
@@ -46,32 +46,32 @@ def chunk_texts(df, text_column):
     chunks = splitter.split_text(combined)
     return chunks
 
-def summarize(selected_text, question):
-    print(1)
-    summarizer = pipeline(
-    "text-generation",#,
-    model=model,
-    tokenizer=tokenizer)#,
-    #max_new_tokens=250#,
-    ##do_sample=False
-    #
-    #)
-    print(2)
-    prompt = f"""Answer the question based ONLY on the text below.
-    Provide 3–5 bullet points.
-    Be specific and avoid generic statements.
-    
-    Text:
-    {selected_text}
-    
-    Question:
-    {question}
-    
-    Answer: """
-    result = summarizer(prompt)[0]["generated_text"]
-    print(3)
-    print(result)
-    return result.split("Summary:", 1)[-1].strip()
+#def summarize(selected_text, question):
+#    print(1)
+#    summarizer = pipeline(
+#    "text-generation",#,
+#    model=model,
+#    tokenizer=tokenizer)#,
+#    #max_new_tokens=250#,
+#    ##do_sample=False
+#    #
+#    #)
+#    print(2)
+#    prompt = f"""Answer the question based ONLY on the text below.
+#    Provide 3–5 bullet points.
+#    Be specific and avoid generic statements.
+#    
+#    Text:
+#    {selected_text}
+#    
+#    Question:
+#    {question}
+#    
+#    Answer: """
+#    result = summarizer(prompt)[0]["generated_text"]
+#    print(3)
+#    print(result)
+#    return result.split("Summary:", 1)[-1].strip()
 
 
 
@@ -448,61 +448,63 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 
-@app.callback(Output('response', 'children'),
-              Input('submit-button','n_clicks'),
-              State('stored-data','data'),
-              State('question','value'),
-              State("dropdown_target_text_mining","value"),
-              State("dropdown_time_text_mining","value"))
-def make_graphs(n, df, question,target,time):
-    if n is None:
-        return dash.no_update
-    else:
-        #context = ' '.join(pd.DataFrame(df)['text'].astype(str).tolist())
-        print(target)
-        df = pd.DataFrame(df)
-        print(df.head())
-        target_str = []
-
-        for x in target:
-            target_str.append(str(x))
-        chunks = chunk_texts(df[ (df["target"].astype(str).isin(target_str))
-                                &(df["time"].isin(time))]
-                                , "text")
-        
-        
-        
-        # 1. Create embeddings for chunks
-        chunk_embeddings = [embed(chunk) for chunk in chunks]
-
-        # 2. Embed the query
-        query_emb = embed("Qualities")
-
-        # 3. Compute similarity
-        scores = [np.dot(query_emb, ce) for ce in chunk_embeddings]
-
-        # 4. Select top chunks
-        top_indices = np.argsort(scores)[-3:]   # top 3
-        selected_text = " ".join([chunks[i] for i in top_indices])  
-
-        print("selected_text")
-        print(selected_text)
-        x = summarize(selected_text, question)
-        #print(df)
-        print("x")
-        print(x)
-       
-        result = x.split("Answer: ",1)[1]
-        
-        print("result")
-        print(result)
-
-        # Print the answer
-        #print(result["answer"])
-        
-        return result
+#@app.callback(Output('response', 'children'),
+#              Input('submit-button','n_clicks'),
+#              State('stored-data','data'),
+#              State('question','value'),
+#              State("dropdown_target_text_mining","value"),
+#              State("dropdown_time_text_mining","value"))
+#def make_graphs(n, df, question,target,time):
+#    if n is None:
+#        return dash.no_update
+#    else:
+#        ##context = ' '.join(pd.DataFrame(df)['text'].astype(str).tolist())
+#        #print(target)
+#        #df = pd.DataFrame(df)
+#        #print(df.head())
+#        #target_str = []
+##
+#        #for x in target:
+#        #    target_str.append(str(x))
+#        #chunks = chunk_texts(df[ (df["target"].astype(str).isin(target_str))
+#        #                        &(df["time"].isin(time))]
+#        #                        , "text")
+#        #
+#        #
+#        #
+#        ## 1. Create embeddings for chunks
+#        #chunk_embeddings = [embed(chunk) for chunk in chunks]
+##
+#        ## 2. Embed the query
+#        #query_emb = embed("Qualities")
+##
+#        ## 3. Compute similarity
+#        #scores = [np.dot(query_emb, ce) for ce in chunk_embeddings]
+##
+#        ## 4. Select top chunks
+#        #top_indices = np.argsort(scores)[-3:]   # top 3
+#        #selected_text = " ".join([chunks[i] for i in top_indices])  
+##
+#        #print("selected_text")
+#        #print(selected_text)
+#        #x = summarize(selected_text, question)
+#        ##print(df)
+#        #print("x")
+#        #print(x)
+#       #
+#        #result = x.split("Answer: ",1)[1]
+#        #
+#        #print("result")
+#        #print(result)
+##
+#        ## Print the answer
+#        ##print(result["answer"])
+#
+#        result = "allo"
+#        
+#        return result
 
 
 
 #if __name__ == '__main__':
-#    app.run_server(debug=True, host="0.0.0.0", port=8050)
+#    app.run(debug=True)

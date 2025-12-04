@@ -80,6 +80,7 @@ external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
+app.config.suppress_callback_exceptions = True
 
 dropdown_style = {"marginTop":"0.5rem","color":"green"}
 

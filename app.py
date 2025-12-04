@@ -79,6 +79,7 @@ def summarize(selected_text, question):
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 dropdown_style = {"marginTop":"0.5rem","color":"green"}
 

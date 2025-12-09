@@ -26,6 +26,7 @@ import pandas as pd
 
 
 print("--- Import library succeeded ---")
+print("2")
 #nlp = spacy.load("en_core_web_lg")
 #
 #model_name = "Qwen/Qwen2.5-1.5B-Instruct"
@@ -78,11 +79,12 @@ print("--- Import library succeeded ---")
 #    return result.split("Summary:", 1)[-1].strip()
 
 
-
+print(2)
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+#print(1)
 server = app.server
 app.config.suppress_callback_exceptions = True
 
@@ -511,5 +513,5 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
 
 
 
-#if __name__ == '__main__':
-#    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)

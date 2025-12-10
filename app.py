@@ -16,6 +16,20 @@ from dash import dash_table
 import plotly.express as px
 import dash_bootstrap_components as dbc
 import pandas as pd
+import wordcloud
+from PIL import Image
+from wordcloud import WordCloud
+from io import BytesIO
+import nltk
+from nltk import bigrams
+from nltk.util import ngrams
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from statistics import mean
+from nltk.tokenize import word_tokenize
+import re
+import langdetect
+from langdetect import detect
+
 #import transformers
 #import torch
 #from transformers import pipeline
